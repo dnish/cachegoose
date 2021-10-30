@@ -13,6 +13,8 @@ Cache.prototype.get = function(key, cb = noop) {
 
 Cache.prototype.set = function(key, value, ttl, cb = noop) {
   if (ttl === 0) ttl = -1;
+  if (this._dontCacheEmpty && (!value || !value.length)) return null;
+  
   return this._cache.set(key, value, ttl, cb);
 };
 
