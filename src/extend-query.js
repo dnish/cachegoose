@@ -56,7 +56,7 @@ module.exports = function(mongoose, cache) {
     });
   };
 
-  mongoose.Query.prototype.cache = function(ttl = 60, customKey = '') {
+  mongoose.Query.prototype.cache = function(ttl = 60, dontCacheEmpty=false, customKey = '') {
     if (typeof ttl === 'string') {
       customKey = ttl;
       ttl = 60;
@@ -64,6 +64,7 @@ module.exports = function(mongoose, cache) {
 
     this._ttl = ttl;
     this._key = customKey;
+    this._dontCacheEmpty = dontCacheEmpty;
     return this;
   };
 
