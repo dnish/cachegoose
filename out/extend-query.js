@@ -40,10 +40,18 @@ module.exports = function (mongoose, cache) {
         }
 
         exec.call(this).then(results => {
-          cache.set(key, results, ttl, () => {
+
+          if (this._dontCacheEmpty && (!results || !results.length)) {
+
             callback(null, results);
             return resolve(results);
-          });
+          } else {
+
+            cache.set(key, results, ttl, () => {
+              callback(null, results);
+              return resolve(results);
+            });
+          }
         }).catch(err => {
           callback(err);
           reject(err);
